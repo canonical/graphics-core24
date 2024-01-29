@@ -5,7 +5,7 @@ on:
     inputs:
       snap:
         description: Which snap to update the lists for
-        default: mesa-core22
+        default: mesa-core24
       channel:
         description: Which channel to update the lists from
         default: stable
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: graphics-core22
+          path: graphics-core24
 
       - name: Download the snaps
         run: |
@@ -40,12 +40,12 @@ jobs:
               sh -c "unsquashfs -cat ${{ inputs.snap }}_{}.snap snap/{}.list \
                 | sed 's/\(.so.[0-9]\+\)\([0-9\.]\+\)\?$/\1*/' \
                 | sort -u \
-                > graphics-core22/lists/${{ inputs.snap }}.{}.list"
+                > graphics-core24/lists/${{ inputs.snap }}.{}.list"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v4
         with:
-          path: graphics-core22
+          path: graphics-core24
           add-paths: lists/*
           branch: refresh-lists-${{ inputs.snap }}
           commit-message: "Refresh lists from ${{ inputs.snap }}/${{ inputs.channel }}"
